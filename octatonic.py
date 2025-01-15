@@ -92,12 +92,47 @@ print("All constructor chords:", constructor_chords)
 note_names = ["C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"]
 
 # print notation for all constructor chords
+print ("-----------------------------")
 for c in range(0, len(constructor_chords)): 
     print (c, "- ", constructor_chords[c])
     for i in range(0,len(note_names)):
         if constructor_chords[c][i] == '1':
-            print (note_names[i],end=" ")
+            print (note_names[i],end="\t")
     print()
-    print ("--------------------")
+    print ("-----------------------------")
+
+
+
+
+# common chord types
+
+common_chords = [
+        [ "major triad", "100010010000" ],
+        [ "major7",      "100010010001" ],
+        [ "dominant7",   "100010010010" ],
+        [ "dom7/b9",     "110010010010" ],
+        [ "dom7/#9",     "100110010010" ],
+        [ "dom7sus4",    "100010010010" ],
+        [ "major9",      "101010010001" ],
+        [ "major add9",  "101010010000" ],
+        [ "dom9",        "101010010010" ],
+        [ "major11",     "101011010001" ],
+        [ "major add11", "100011010000" ],
+        [ "major7/11",   "100011010001" ],
+        [ "major7/#11",  "100010110001" ],
+        [ "major6",      "100010010100" ],
+        [ "dom13",       "101010010110" ],
+        [ "dom7add13",   "100010010110" ],
+
+        [ "minor triad", "100100010000" ],
+        [ "minor7",      "100100010010" ],
+        [ "minor7b9",    "110100010010" ],
+        [ "minor9",      "101100010010" ]
+    ]
+
+
+
+
+
 
 
