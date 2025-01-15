@@ -91,28 +91,16 @@ print("All constructor chords:", constructor_chords)
 
 note_names = ["C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"]
 
-# print notation for all constructor chords
-print ("-----------------------------")
-for c in range(0, len(constructor_chords)): 
-    print (c, "- ", constructor_chords[c])
-    for i in range(0,len(note_names)):
-        if constructor_chords[c][i] == '1':
-            print (note_names[i],end="\t")
-    print()
-    print ("-----------------------------")
-
-
-
-
 # common chord types
-
 common_chords = [
         [ "major triad", "100010010000" ],
         [ "major7",      "100010010001" ],
         [ "dominant7",   "100010010010" ],
         [ "dom7/b9",     "110010010010" ],
         [ "dom7/#9",     "100110010010" ],
-        [ "dom7sus4",    "100010010010" ],
+        [ "dom7sus4",    "100001010010" ],
+	[ "dom7/11",     "100011010010" ],
+	[ "5 add7/11",   "100001010010" ],
         [ "major9",      "101010010001" ],
         [ "major add9",  "101010010000" ],
         [ "dom9",        "101010010010" ],
@@ -145,7 +133,7 @@ common_chords = [
 	[ "dim triad", 	 "100100100000" ],
 	[ "diminished7", "100100100100" ],
 	[ "min7b5",	 "100100100010" ],
-	[ "diminished6", "100100100100" ],
+	[ "diminished b6", "100100101000" ],
 
 	[ "augmented",   "100010001000" ],
 	[ "aug m7", 	 "100010001010" ],
@@ -156,6 +144,35 @@ common_chords = [
 	[ "sus2",	 "101000010000" ],
 	[ "sus4", 	 "100001010000" ]
     ]
+
+
+def find_chord_names (pattern):
+    # across all pattern rotations
+    namelist = [] 
+    for j in range(0, len(str(pattern))):
+        # compare to all common chords
+        for i in range(0, len(common_chords)):
+            if pattern[j:] + pattern[:j] == common_chords[i][1]:
+                namelist.append(note_names[j] +" "+ common_chords[i][0])
+    return namelist
+
+
+
+
+# print notation for all constructor chords
+print ("-----------------------------")
+# for all constructor chords in order 
+for c in range(0, len(constructor_chords)): 
+    print(c, "-", constructor_chords[c], ":")
+    # print note names for canonical chord
+    for i in range(0,len(note_names)):
+        if constructor_chords[c][i] == '1':
+            print (note_names[i],end="\t")
+    print ()
+    chordnames =print (find_chord_names(constructor_chords[c]))
+    print ("-----------------------------")
+
+
 
 
 
