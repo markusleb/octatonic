@@ -11,4 +11,3 @@ In addition: derive chord symbols manually
 Future work: 
 - create big table of scales and generators
 
-- 
