@@ -33,9 +33,10 @@ n = 12
 k = 8
 combinations = sorted(generate_combinations(n, k))
 
-print(len(combinations),"combinations")
+print ("Summary:")
+print ("\t", len(combinations),"combinations")
 unique_combinations = sorted(remove_rotated_bit_strings(combinations))
-print(len(unique_combinations), "unique combinations")
+print ("\t", len(unique_combinations), "unique combinations")
 
 # generate "upper" and "lower" constructor chords
 # currently the rule is: 
@@ -65,6 +66,8 @@ U_list = []
 L_list = []
 Scale_list = []
 
+print ("\n\n=====================================================\nAll Scale Patterns:\n")
+
 for A in unique_combinations:
     U,L = generate_U_L(A)
     Scale_list.append(A)
@@ -76,8 +79,8 @@ for A in unique_combinations:
 U_unique_list = sorted(list(set(U_list)))
 L_unique_list = sorted(list(set(L_list)))
 
-print(U_unique_list)
-print(L_unique_list)
+print ("\nUnique upper constructor chords:\n",U_unique_list)
+print ("\nUnique lower constructor chords:\n",L_unique_list)
 
 # create list of unique constructor chords
 U_unique_list.extend(L_unique_list)
@@ -92,13 +95,16 @@ def remove_trailing_zero_rotate(pattern):
 for i in range(0,len(constructor_chords)):
     constructor_chords[i] = remove_trailing_zero_rotate(constructor_chords[i])
 
-print("All constructor chords:", constructor_chords)
+print("\nAll constructor chords combined:\n", constructor_chords, "\n")
 
 note_names = ["C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"]
+simple_note_names = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
+
+
 
 # common chord types
 common_chords = [
-        [ "major triad", "100010010000" ],
+        [ "major",       "100010010000" ],
         [ "major7",      "100010010001" ],
         [ "dominant7",   "100010010010" ],
         [ "dom7/b9",     "110010010010" ],
@@ -107,40 +113,40 @@ common_chords = [
 	[ "dom7/11",     "100011010010" ],
 	[ "5 add7/11",   "100001010010" ],
         [ "major9",      "101010010001" ],
-        [ "major add9",  "101010010000" ],
+        [ "maj add9",    "101010010000" ],
         [ "dom9",        "101010010010" ],
         [ "major11",     "101011010001" ],
-        [ "major add11", "100011010000" ],
+        [ "maj add11",   "100011010000" ],
         [ "major7/11",   "100011010001" ],
         [ "major7/#11",  "100010110001" ],
         [ "major6",      "100010010100" ],
         [ "dom13",       "101010010110" ],
         [ "dom7add13",   "100010010110" ],
 	[ "lydian", 	 "100000110000" ],
-	[ "lydian maj7", "100000110001" ],
-	[ "lydian 9",    "101000110001" ],
+	[ "lyd maj7",    "100000110001" ],
+	[ "lyd 9",       "101000110001" ],
 
-        [ "minor triad", "100100010000" ],
+        [ "minor",       "100100010000" ],
 	[ "minor6", 	 "100100010100" ],
         [ "minor7",      "100100010010" ],
         [ "minor7b9",    "110100010010" ],
         [ "minor9",      "101100010010" ],
 	[ "minor b9", 	 "110100010010" ],
-	[ "minor add9",  "101100010000" ],
+	[ "min add9",    "101100010000" ],
 	[ "minor11",     "101101010010" ],
-	[ "minor7add11", "100101010010" ],
-	[ "minor add11", "100101010000" ],
+	[ "min7add11",   "100101010010" ],
+	[ "min add11",   "100101010000" ],
 	[ "min add9/11", "101101010000" ],
 	[ "min maj7",	 "100100010001" ],
 	[ "min maj9", 	 "101100010001" ],
 	[ "min maj11", 	 "101101010001" ],
 
-	[ "dim triad", 	 "100100100000" ],
-	[ "diminished7", "100100100100" ],
+	[ "dim", 	 "100100100000" ],
+	[ "dim7",        "100100100100" ],
 	[ "min7b5",	 "100100100010" ],
 	[ "dim b6",      "100100101000" ],
 
-	[ "augmented",   "100010001000" ],
+	[ "aug",         "100010001000" ],
 	[ "aug m7", 	 "100010001010" ],
 	[ "aug maj7",	 "100010001001" ],
 	[ "aug 6",       "100010001100" ],
@@ -172,11 +178,13 @@ def find_first_chord_name (pattern):
 def find_root_note (pattern):
     for i in range(len(str(pattern))):
         if pattern[i] == '1':
-            return note_names[i]
+            return simple_note_names[i]
 
 
 # print notation for all constructor chords
-print ("-----------------------------")
+print ("\nAll constructor chords notated:")
+
+print ("-------------------------------------")
 # for all constructor chords in order 
 for c in range(0, len(constructor_chords)): 
     print(c, "-", constructor_chords[c], ":")
@@ -186,7 +194,7 @@ for c in range(0, len(constructor_chords)):
             print (note_names[i],end="\t")
     print ()
     print (find_chord_names(constructor_chords[c]))
-    print ("-----------------------------")
+    print ("-------------------------------------")
 
 
 # align scales to the leftmost note
@@ -198,16 +206,42 @@ for S in range (len(Scale_list)):
             U_list[S] = U_list[S][1:] + U_list[S][:1]
             L_list[S] = L_list[S][1:] + L_list[S][:1]
 
+def hamming_distance (x,y):
+    d = 0
+    for i in range(len(x)):
+        if x[i] != y[i]:
+            d += 1
+    return d
 
+def minimal_distance (a,b):
+    min_d = hamming_distance (a,b)
+    for i in range(1,len(b)):
+        dist = hamming_distance(a, b[i:] + b[:i])
+        if dist < min_d:
+            min_d = dist
+    return min_d
 
+Major_scale = "101011010101"
+Harm_minor_scale = "101101011001"
+Melod_minor_scale = "101101010101"
+
+print ("\n\n\n=====================================================================================================================")
+print ("Scale ID\t", "Scale Pattern\t", "Upper Chord\tName\t\t", "Lower Chord\tName\t\t", "Norm. Musical Dist.")
+print ("\t\t\t\t\t\t\t\t\t\t\t\tMaj\tHmin\tMmin")
+print ("---------------------------------------------------------------------------------------------------------------------")
 for S in range(len(Scale_list)):
     U_chord = U_list[S]
     L_chord = L_list[S]
-    print (Scale_list[S], "\t", 
+    print ("ID:", int(Scale_list[S], base=2), "\t", Scale_list[S], "\t", 
         U_chord, "\t", find_root_note(U_chord), find_first_chord_name(U_chord), "\t", 
-        L_chord, "\t", find_root_note(L_chord), find_first_chord_name(L_chord))
+        L_chord, "\t", find_root_note(L_chord), find_first_chord_name(L_chord), "\t",
+	minimal_distance(Major_scale, Scale_list[S]), "\t",
+        minimal_distance(Harm_minor_scale, Scale_list[S]), "\t",
+        minimal_distance(Melod_minor_scale, Scale_list[S]))
+
+print ("=====================================================================================================================")
 
 
 
 
-
+ 
