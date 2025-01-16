@@ -10,4 +10,5 @@ In addition: derive chord symbols manually
 
 Future work: 
 - create big table of scales and constructors
-
+- enumerate/identify scales
+- judge their usefulness for musical purposes
