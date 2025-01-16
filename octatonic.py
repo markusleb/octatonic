@@ -63,9 +63,11 @@ def generate_U_L(A):
 
 U_list = []
 L_list = []
+Scale_list = []
 
 for A in unique_combinations:
     U,L = generate_U_L(A)
+    Scale_list.append(A)
     U_list.append(U)
     L_list.append(L)
     print(f"A: {A}, U: {U}, L: {L}")
@@ -81,12 +83,15 @@ print(L_unique_list)
 U_unique_list.extend(L_unique_list)
 constructor_chords = remove_rotated_bit_strings(U_unique_list)
 
-for i in range(0,len(constructor_chords)):
-    a = constructor_chords[i]
+def remove_trailing_zero_rotate(pattern):
+    a = pattern
     while a[0] == '0':
         a = a[1:] + a[:1]
-    constructor_chords[i] = a
-  
+    return a;
+
+for i in range(0,len(constructor_chords)):
+    constructor_chords[i] = remove_trailing_zero_rotate(constructor_chords[i])
+
 print("All constructor chords:", constructor_chords)
 
 note_names = ["C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"]
@@ -133,7 +138,7 @@ common_chords = [
 	[ "dim triad", 	 "100100100000" ],
 	[ "diminished7", "100100100100" ],
 	[ "min7b5",	 "100100100010" ],
-	[ "diminished b6", "100100101000" ],
+	[ "dim b6",      "100100101000" ],
 
 	[ "augmented",   "100010001000" ],
 	[ "aug m7", 	 "100010001010" ],
@@ -156,7 +161,18 @@ def find_chord_names (pattern):
                 namelist.append(note_names[j] +" "+ common_chords[i][0])
     return namelist
 
+def find_first_chord_name (pattern):
+    # across all pattern rotations
+    for j in range(0, len(str(pattern))):
+        # compare to all common chords
+        for i in range(0, len(common_chords)):
+            if pattern[j:] + pattern[:j] == common_chords[i][1]:
+                return common_chords[i][0]
 
+def find_root_note (pattern):
+    for i in range(len(str(pattern))):
+        if pattern[i] == '1':
+            return note_names[i]
 
 
 # print notation for all constructor chords
@@ -169,12 +185,27 @@ for c in range(0, len(constructor_chords)):
         if constructor_chords[c][i] == '1':
             print (note_names[i],end="\t")
     print ()
-    chordnames =print (find_chord_names(constructor_chords[c]))
+    print (find_chord_names(constructor_chords[c]))
     print ("-----------------------------")
 
 
+# align scales to the leftmost note
+
+for S in range (len(Scale_list)):
+    for R in range (len(Scale_list[S])):
+        if Scale_list[S][0] == '0':
+            Scale_list[S] = Scale_list[S][1:] + Scale_list[S][:1]
+            U_list[S] = U_list[S][1:] + U_list[S][:1]
+            L_list[S] = L_list[S][1:] + L_list[S][:1]
 
 
+
+for S in range(len(Scale_list)):
+    U_chord = U_list[S]
+    L_chord = L_list[S]
+    print (Scale_list[S], "\t", 
+        U_chord, "\t", find_root_note(U_chord), find_first_chord_name(U_chord), "\t", 
+        L_chord, "\t", find_root_note(L_chord), find_first_chord_name(L_chord))
 
 
 
