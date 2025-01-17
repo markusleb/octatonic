@@ -1,23 +1,30 @@
 def generate_combinations(n, k):
-    def backtrack(current, ones):
-        if len(current) == n:
-            if ones == k:
-                result.append(current)
-            return
-        backtrack(current + '0', ones)
-        backtrack(current + '1', ones + 1)
+    def cross_sum (bit_string):
+        cs = 0
+        for j in range(len(bit_string)):
+            if bit_string[j] == '1':
+                cs += 1
+        return cs
 
     result = []
-    backtrack('', 0)
+    for i in range(2**n):
+        b_string_size_n = str(bin(i)[2:].zfill(n))
+#        print ("checking",i, b_string_size_n, end="")
+        if cross_sum(b_string_size_n)==k:
+            result.append(b_string_size_n)
+#            print(" *")
+#        else:
+#            print("")
     return result
 
-def normalize_bit_string(bit_string):
-    # Convert bit_string to a list for easier manipulation
-    bit_list = list(bit_string)
-    # Find the lexicographically largest rotation
-    largest_rotation = max(bit_list[i:] + bit_list[:i] for i in range(len(bit_string)))
-    return ''.join(largest_rotation)
 
+def normalize_bit_string(bit_string):
+    # convert to int value
+    value = int(bit_string, base=2)
+    # find largest rotated value
+    largest_rotation = max(int(bit_string[i:]+bit_string[:i], base=2) for i in range(len(bit_string)))
+    return str(bin(largest_rotation))[2:]
+    
 def remove_rotated_bit_strings(bit_strings):
     seen = set()
     unique_bit_strings = []
@@ -25,7 +32,7 @@ def remove_rotated_bit_strings(bit_strings):
         normalized = normalize_bit_string(bit_string)
         if normalized not in seen:
             seen.add(normalized)
-            unique_bit_strings.append(bit_string)
+            unique_bit_strings.append(normalized)
     return sorted(unique_bit_strings)
 
 # Create combinations for 8 notes witihin chromatic scale
@@ -66,7 +73,7 @@ U_list = []
 L_list = []
 Scale_list = []
 
-print ("\n\n=====================================================\nAll Scale Patterns:\n")
+print ("\n\n=====================================================\nAll Scale Patterns with upper and lower constructor chords:\n")
 
 for A in unique_combinations:
     U,L = generate_U_L(A)
@@ -110,8 +117,8 @@ common_chords = [
         [ "dom7/b9",     "110010010010" ],
         [ "dom7/#9",     "100110010010" ],
         [ "dom7sus4",    "100001010010" ],
-	[ "dom7/11",     "100011010010" ],
-	[ "5 add7/11",   "100001010010" ],
+        [ "dom7/11",     "100011010010" ],
+        [ "5 add7/11",   "100001010010" ],
         [ "major9",      "101010010001" ],
         [ "maj add9",    "101010010000" ],
         [ "dom9",        "101010010010" ],
@@ -122,38 +129,38 @@ common_chords = [
         [ "major6",      "100010010100" ],
         [ "dom13",       "101010010110" ],
         [ "dom7add13",   "100010010110" ],
-	[ "lydian", 	 "100000110000" ],
-	[ "lyd maj7",    "100000110001" ],
-	[ "lyd 9",       "101000110001" ],
+        [ "lydian", 	 "100000110000" ],
+        [ "lyd maj7",    "100000110001" ],
+        [ "lyd 9",       "101000110001" ],
 
         [ "minor",       "100100010000" ],
-	[ "minor6", 	 "100100010100" ],
+        [ "minor6", 	 "100100010100" ],
         [ "minor7",      "100100010010" ],
         [ "minor7b9",    "110100010010" ],
         [ "minor9",      "101100010010" ],
-	[ "minor b9", 	 "110100010010" ],
-	[ "min add9",    "101100010000" ],
-	[ "minor11",     "101101010010" ],
-	[ "min7add11",   "100101010010" ],
-	[ "min add11",   "100101010000" ],
-	[ "min add9/11", "101101010000" ],
-	[ "min maj7",	 "100100010001" ],
-	[ "min maj9", 	 "101100010001" ],
-	[ "min maj11", 	 "101101010001" ],
+        [ "minor b9", 	 "110100010010" ],
+        [ "min add9",    "101100010000" ],
+        [ "minor11",     "101101010010" ],
+        [ "min7add11",   "100101010010" ],
+        [ "min add11",   "100101010000" ],
+        [ "min add9/11", "101101010000" ],
+        [ "min maj7",	 "100100010001" ],
+        [ "min maj9", 	 "101100010001" ],
+        [ "min maj11", 	 "101101010001" ],
+        
+        [ "dim", 	 "100100100000" ],
+        [ "dim7",        "100100100100" ],
+        [ "min7b5",	 "100100100010" ],
+        [ "dim b6",      "100100101000" ],
 
-	[ "dim", 	 "100100100000" ],
-	[ "dim7",        "100100100100" ],
-	[ "min7b5",	 "100100100010" ],
-	[ "dim b6",      "100100101000" ],
-
-	[ "aug",         "100010001000" ],
-	[ "aug m7", 	 "100010001010" ],
-	[ "aug maj7",	 "100010001001" ],
-	[ "aug 6",       "100010001100" ],
-	[ "aug 9",       "101010001001" ],
-
-	[ "sus2",	 "101000010000" ],
-	[ "sus4", 	 "100001010000" ]
+        [ "aug",         "100010001000" ],
+        [ "aug m7", 	 "100010001010" ],
+        [ "aug maj7",	 "100010001001" ],
+        [ "aug 6",       "100010001100" ],
+        [ "aug 9",       "101010001001" ],
+        
+        [ "sus2",	 "101000010000" ],
+        [ "sus4", 	 "100001010000" ]
     ]
 
 
@@ -240,8 +247,3 @@ for S in range(len(Scale_list)):
         minimal_distance(Melod_minor_scale, Scale_list[S]))
 
 print ("=====================================================================================================================")
-
-
-
-
- 
