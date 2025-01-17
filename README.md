@@ -1,6 +1,6 @@
 # octatonic
 
-_octatonic_ is a quick and dirty Python script to find all possible octatonic scales in the chromatic 12 tone realm (12TET)) and the two chords that can be used to harmonize these (further called "constructor" chords)
+_octatonic_ is a quick and dirty Python script to find all possible octatonic scales in the chromatic 12 tone realm (12TET) and the two chords that can be used to harmonize these (further called "constructor" chords).
 
 ## Motivation
 Barry Harris' dim6th scale (or its major counterpart) have a curious property of only requiring two chord types, i.e. two chords and their inversions, to harmonize the full scale. Due to the proximity of Harris' scale to either major or melodic/harmonic minor - only one note added in each case as a color tone - they sound particularly good for improvisation. 
@@ -13,21 +13,24 @@ For easier handling, let us represent the chromatic scale as a 12-bit string of 
 
 The method I am then using would work as follows:
 1. We would construct all possible 8-note scales within the 12TET bitstring:
-   a. iterate over all 2**12 combinations of bits
-   b. only select those pattern to the set of scales that have 8 bits set to '1'
+   1. iterate over all 2**12 combinations of bits
+   2. only select those pattern to the set of scales that have 8 bits set to '1'
 
-2. Purge those scales from the set that are just modes of others
-   a. For all patterns within the set, create their rotated siblings ("modes") and compare with rest of set.
-   b. remove doubles from set
+3. Purge those scales from the set that are just modes of others
+   1. For all patterns within the set, create their rotated siblings ("modes") and compare with rest of set.
+   2. remove doubles from set
    
-4. With all scales now identified let's create the constructor chords. The simplest form of constructor chords is structured such that we pick every other note from the scale, sort of in 3rd stepping, and sort them into a "lower" and an "upper" four-tone-chord. (NB: you could generate these constructors differently - see the previous Imaj7/Vmaj7 example - but you would lose the property of only using the constructors and their inversions to harmonize the scale.)
+4. With all scales now identified let's create the constructor chords. The simplest form of constructor chords is structured such that we pick every other note from the scale, sort of in 3rd stepping, and sort them into a "lower" and an "upper" four-tone-chord.
+
+   _(NB: you could generate these constructors differently - see the previous Imaj7/Vmaj7 example - but you would lose the property of only using the constructors and their inversions to harmonize the scale.)_
+
 5. Now that we have all possible constructor chord types, list them in notation form and with chord symbols.
 6. For each of the scales we can assess their usefulness by comparing them to well-known scales such as major, harmonic, and melodic minor. Typically, a scale will sound pleasing and not too exotic or jarring if it only deviates with very few notes from either of the common scales. In order to judge all of our derived 8-note scales we thus calculate the Normalized Harmonic Distance to the common scales by calculating the Hamming distance to the bitstring pattern of the common scales.
-8. Finally, we can now print out a table that contains all of these scales in bit pattern notation, their upper and lower constructor chords, the three harmonic distances, and a unique ID based on the binary numerical value of the normalized scale bitstring.
+7. Finally, we can now print out a table that contains all of these scales in bit pattern notation, their upper and lower constructor chords, the three harmonic distances, and a unique ID based on the binary numerical value of the normalized scale bitstring.
 
 ## Result
 The resulting table gives us the collection of _all_ unique 8-note scales within 12TET. It does contain trivial scales such as 8 sequential half-tone steps (ID: 4080), and the two enharmonically identical  whole-half and half-whole scales (ID: 3510), but it also contains the two Barry Harris scales (ID: 3798 and ID: 3802) and the overlay scales of Imaj7/Vmaj7 or I7/V7 (both mapping to ID: 3930).
 
 More scales should be explored for improvisation as it turns out other scales have equally beneficial proximity to established common scales. 
 
-(C) Markus Leberecht, Jan 2025
+_**(C) Markus Leberecht, Jan 2025**_
