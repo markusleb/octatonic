@@ -1,3 +1,4 @@
+
 def generate_combinations(n, k):
     def cross_sum (bit_string):
         cs = 0
@@ -174,13 +175,15 @@ def find_chord_names (pattern):
                 namelist.append(note_names[j] +" "+ common_chords[i][0])
     return namelist
 
+# finds first chord name and returns root note number plus chord name
 def find_first_chord_name (pattern):
     # across all pattern rotations
     for j in range(0, len(str(pattern))):
         # compare to all common chords
         for i in range(0, len(common_chords)):
             if pattern[j:] + pattern[:j] == common_chords[i][1]:
-                return common_chords[i][0]
+                return j, common_chords[i][0]
+    return 0," (undef)"
 
 def find_root_note (pattern):
     for i in range(len(str(pattern))):
@@ -239,9 +242,12 @@ print ("------------------------------------------------------------------------
 for S in range(len(Scale_list)):
     U_chord = U_list[S]
     L_chord = L_list[S]
+    U_root,U_string = find_first_chord_name(U_chord)
+    L_root,L_string = find_first_chord_name(L_chord)
+    
     print ("ID:", int(Scale_list[S], base=2), "\t", Scale_list[S], "\t", 
-        U_chord, "\t", find_root_note(U_chord), find_first_chord_name(U_chord), "\t", 
-        L_chord, "\t", find_root_note(L_chord), find_first_chord_name(L_chord), "\t",
+        U_chord, "\t", simple_note_names[U_root] + U_string, "\t", 
+        L_chord, "\t", simple_note_names[L_root] + L_string, "\t",
 	minimal_distance(Major_scale, Scale_list[S]), "\t",
         minimal_distance(Harm_minor_scale, Scale_list[S]), "\t",
         minimal_distance(Melod_minor_scale, Scale_list[S]))
