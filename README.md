@@ -24,3 +24,10 @@ The method I am then using would work as follows:
 5. Now that we have all possible constructor chord types, list them in notation form and with chord symbols.
 6. For each of the scales we can assess their usefulness by comparing them to well-known scales such as major, harmonic, and melodic minor. Typically, a scale will sound pleasing and not too exotic or jarring if it only deviates with very few notes from either of the common scales. In order to judge all of our derived 8-note scales we thus calculate the Normalized Harmonic Distance to the common scales by calculating the Hamming distance to the bitstring pattern of the common scales.
 8. Finally, we can now print out a table that contains all of these scales in bit pattern notation, their upper and lower constructor chords, the three harmonic distances, and a unique ID based on the binary numerical value of the normalized scale bitstring.
+
+## Result
+The resulting table gives us the collection of _all_ unique 8-note scales within 12TET. It does contain trivial scales such as 8 sequential half-tone steps (ID: 4080), and the two enharmonically identical  whole-half and half-whole scales (ID: 3510), but it also contains the two Barry Harris scales (ID: 3798 and ID: 3802) and the overlay scales of Imaj7/Vmaj7 or I7/V7 (both mapping to ID: 3930).
+
+More scales should be explored for improvisation as it turns out other scales have equally beneficial proximity to established common scales. 
+
+(C) Markus Leberecht, Jan 2025
