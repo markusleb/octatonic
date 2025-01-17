@@ -9,7 +9,7 @@ Inspired by the interesting sound of some other accidentally discovered scales t
 
 ## Method
 
-For easier handling, let us represent the chromatic scale as a 12-bit string of '0's and '1's, representing a note existing within a scale as '1', and no note by '0'. Ex.: if we start with C as the leftmost note in such bitstring we would therefore get '101011010101' as the representation of the regular C major scale. Additional effort then has to be put in to identify the modes of C major as identical to the base scale, i.e. D dorian, E phrygian, etc. and to sort all resulting scales in a normalized way. 
+For easier handling, let us represent the chromatic scale as a 12-bit string of '0's and '1's, representing a note existing within a scale as '1', and no note by '0'. Ex.: if we start with C as the leftmost note in such bitstring we would therefore get '101011010101' as the representation of the regular C major scale. Additional effort then has to be put in to identify the modes of C major as identical to the base scale, i.e. D dorian, E phrygian, etc., remove these as doubles, and sort all resulting scales in a normalized way. 
 
 The method I am then using would work as follows:
 1. We would construct all possible 8-note scales within the 12TET bitstring:
@@ -22,7 +22,7 @@ The method I am then using would work as follows:
    
 4. With all scales now identified let's create the constructor chords. The simplest form of constructor chords is structured such that we pick every other note from the scale, sort of in 3rd stepping, and sort them into a "lower" and an "upper" four-tone-chord.
 
-   _(NB: you could generate these constructors differently - see the previous Imaj7/Vmaj7 example - but you would lose the property of only using the constructors and their inversions to harmonize the scale.)_
+   _(NB: you could consider generating these constructors differently - see the previous Imaj7/Vmaj7 example - but you would lose the property of only using the constructors and their inversions to harmonize the scale.)_
 
 5. Now that we have all possible constructor chord types, list them in notation form and with chord symbols.
 6. For each of the scales we can assess their usefulness by comparing them to well-known scales such as major, harmonic, and melodic minor. Typically, a scale will sound pleasing and not too exotic or jarring if it only deviates with very few notes from either of the common scales. In order to judge all of our derived 8-note scales we thus calculate the Normalized Harmonic Distance to the common scales by calculating the Hamming distance to the bitstring pattern of the common scales.
@@ -34,3 +34,7 @@ The resulting table gives us the collection of _all_ unique 8-note scales within
 More scales should be explored for improvisation as it turns out other scales have equally beneficial proximity to established common scales. 
 
 _**(C) Markus Leberecht, Jan 2025**_
+
+### Disclaimers
+1. No, this is not well programmed. It's obvious that there are probably a lot more elegant and efficient methods for some parts of the program, e.g. for generating 12 bit patterns with 8 bits set to '1', or for normalizing and reducing the set of scales. However, I kept what worked and was intuitively understandable to me.
+2. If you find errors or anything that bothers you in terms of nomenclature or functionality, please raise an issue here in the repo. 
